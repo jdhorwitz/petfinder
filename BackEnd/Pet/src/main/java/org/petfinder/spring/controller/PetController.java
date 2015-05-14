@@ -8,6 +8,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.criterion.Projections;
 import org.petfinder.spring.model.Pet;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -36,8 +41,10 @@ public class PetController {
 		Pet pet = new Pet();
 		pet.setId(9999);
 		pet.setName("Dummy");
-		pet.setCreatedDate(new Date());
+		//pet.setCreatedDate(new Date());
 		petData.put(9999, pet);
+		
+		
 		return pet;
 	}
 
@@ -51,20 +58,48 @@ public class PetController {
 	@RequestMapping(value = PetRestURIConstants.GET_ALL_PET, method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody List<Pet> getAllPet() {
 		logger.info("Start getAllPet.");
-		List<Pet> pets = new ArrayList<Pet>();
+		List<Pet> pets;// = new ArrayList<Pet>();
 		Set<Integer> petIdKeys = petData.keySet();
-		for (Integer i : petIdKeys) {
-			pets.add(petData.get(i));
-		}
+		Pet tmpPet;
+		
+		// Database session to return all Pets inside the MySQL database
+		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		Criteria crit = session.createCriteria(Pet.class);
+		pets = crit.list();
+
+		session.close();
+		sessionFactory.close();
+
 		return pets;
 	}
 
 	@RequestMapping(value = PetRestURIConstants.CREATE_PET, method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public @ResponseBody Pet createPet(@RequestBody Pet pet) {
 		logger.info("Start createPet.");
-		pet.setCreatedDate(new Date());
+		//pet.setCreatedDate(new Date());
 		petData.put(pet.getId(), pet);
 		return pet;
+	}
+	
+	/* This method is used to initialize the database OR to add a tmp Pet */
+	@RequestMapping(value = PetRestURIConstants.CREATE_DATABASE)
+	public /*@ResponseBody*/ void createDB() {
+		logger.info("Creating Database");
+		
+		Pet tmpPet = new Pet();
+		tmpPet.setName("tmp");
+		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+		Session session = sessionFactory.openSession();
+		
+		// Database usage 
+		session.beginTransaction();
+		session.save(tmpPet);
+		session.getTransaction().commit();
+		session.close();
+		
+		sessionFactory.close();
 	}
 
 	@RequestMapping(value = PetRestURIConstants.DELETE_PET, method = RequestMethod.DELETE, produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE })
