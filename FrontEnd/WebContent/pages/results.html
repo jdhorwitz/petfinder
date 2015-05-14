@@ -1,14 +1,7 @@
-
 <!-- Example row of columns -->
 <h4>{{pets.results.length}} total</h4>
-<pagination 
-	ng-model="currentPage"
-	total-items="pets.results.length"
-	max-size="maxSize"  
-	boundary-links="true">
-</pagination>
 <div class="row" id="result">
-	<div class="col-lg-4" ng-repeat="pet in filteredPets">
+	<div class="col-lg-4" ng-repeat="pet in pets.results">
 		<h2>Pet # {{pet.id}}</h2>
 		<p>Name:  {{pet.name}}</p>
 		<p>Age:  {{pet.age}}</p>
@@ -18,9 +11,3 @@
 		<p><a class="btn btn-primary" href="#" role="button" id="viewMore" disabled>View more &raquo;</a></p>
 	</div>
 </div>
-<pagination
-	ng-model="currentPage"
-	total-items="pets.results.length"
-	max-size="maxSize"  
-	boundary-links="true">
-</pagination>

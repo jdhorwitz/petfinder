@@ -4,6 +4,7 @@ petFinderApp.controller('resultController', function($scope, $http, search, $loc
 	$scope.currentPage = 1;
 	$scope.numPerPage = 10;
 	$scope.maxSize = 5;
+	$scope.numPages = $scope.pets.results.length / $scope.numPerPage;
 	
 	$scope.$watchCollection('[pets.results, currentPage]', function() {
 		console.log("Change detected!  |  pets.results");
