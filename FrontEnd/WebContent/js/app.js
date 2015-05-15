@@ -35,7 +35,7 @@ petFinderApp.config(function($routeProvider) {
 		});
 });
 
-petFinderApp.service("search", function Search() {
+angular.module('petFinderApp').service("search", function Search() {
 	var search = this;
 	search.results = [];
 });

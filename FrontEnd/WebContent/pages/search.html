@@ -2,16 +2,18 @@
 	<div class="jumbotron">
 		<h1>Search For a Pet Your Own Way</h1>
 		<p class="lead">Click below to see random pets, or search for what you want.</p>
-		<p><a class="btn btn-lg btn-success" href="#search/results" role="button" id="btnjson" ng-click="getPet()">Random Pets</a></p>
+		<p><a class="btn btn-lg btn-success" href="#search/results" role="button" id="btnjson" ng-click="getPet()">Random</a></p>
 	</div>
 	     	
-	<div class="row" style="display:none">
-	<form class="col-lg-4" ng-submit="addPet()">   	
-		<input type="text" ng-model="petName"  size="30" placeholder="name"><br>	
-		<input type="text" ng-model="petAge"  size="30" placeholder="age"><br>
+	<div class="row">
+	<form class="col-lg-4" ng-submit="getSearch()">
+		<h2>Filters</h2>
+		<input type="text" ng-model="petName"  size="30" placeholder="name"><br>
+		<input type="range" ng-model="petAge"  size="30">{{petAge}}<br>
 		<input type="text" ng-model="petColor"  size="30" placeholder="color"><br>
 		<input type="text" ng-model="petSpecies"  size="30" placeholder="species"><br>
 		<input type="text" ng-model="petBreed"  size="30" placeholder="breed"><br>
+		<div ng-dropdown-multiselect="" options="example1data" selected-model="example1model"></div>
 		<input class="btn btn-primary" type="submit" value="Find Pet">
 	</form>
 	</div>

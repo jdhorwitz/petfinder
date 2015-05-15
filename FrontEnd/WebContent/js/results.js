@@ -11,6 +11,14 @@ petFinderApp.controller('resultController', function($scope, $http, search, $loc
 		var begin = (($scope.currentPage - 1) * $scope.numPerPage);
 		var end = begin + $scope.numPerPage;
 		
+		console.log("Results: " + JSON.stringify($scope.pets.results));
 		$scope.filteredPets = $scope.pets.results.slice(begin, end);
+
+		
+		if($scope.pets.results.length == 0){
+	    	$location.path('/search');
+		} else {
+			console.log("Total: " + $scope.pets.results.length);
+		}
 	});
 });
